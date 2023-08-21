@@ -1,0 +1,121 @@
+ Verifying ingress addon...
+🌟  The 'ingress' addon is enabled
+@ugrand ➜ /workspaces/Microk8s_Install-Ubuntu-22.04 (main) $ kubectl create deployment my-nginx --image=nginx
+deployment.apps/my-nginx created
+@ugrand ➜ /workspaces/Microk8s_Install-Ubuntu-22.04 (main) $  kubectl get deployments.apps my-nginx
+NAME       READY   UP-TO-DATE   AVAILABLE   AGE
+my-nginx   1/1     1            1           21s
+@ugrand ➜ /workspaces/Microk8s_Install-Ubuntu-22.04 (main) $ kubectl get pods
+NAME                      READY   STATUS    RESTARTS   AGE
+my-nginx-b8dd4cd6-t5htq   1/1     Running   0          39s
+@ugrand ➜ /workspaces/Microk8s_Install-Ubuntu-22.04 (main) $ kubectl expose deployment my-nginx --name=my-nginx-svc --type=NodePort --port=80
+service/my-nginx-svc exposed
+@ugrand ➜ /workspaces/Microk8s_Install-Ubuntu-22.04 (main) $ kubectl get svc my-nginx-svc
+NAME           TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
+my-nginx-svc   NodePort   10.101.77.166   <none>        80:31663/TCP   17s
+@ugrand ➜ /workspaces/Microk8s_Install-Ubuntu-22.04 (main) $ minikube service my-nginx-svc --url
+http://192.168.49.2:31663
+@ugrand ➜ /workspaces/Microk8s_Install-Ubuntu-22.04 (main) $ curl https://192.168.49.2:31663
+curl: (35) error:1408F10B:SSL routines:ssl3_get_record:wrong version number
+@ugrand ➜ /workspaces/Microk8s_Install-Ubuntu-22.04 (main) $ curl http://192.168.49.2:31663
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+html { color-scheme: light dark; }
+body { width: 35em; margin: 0 auto;
+font-family: Tahoma, Verdana, Arial, sans-serif; }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
+
+<p>For online documentation and support please refer to
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
+@ugrand ➜ /workspaces/Microk8s_Install-Ubuntu-22.04 (main) $ minikube stop
+✋  Stopping node "minikube"  ...
+🛑  Powering off "minikube" via SSH ...
+ 
+Now we tuer🛑  1 node stopped.
+@ugrand ➜ /workspaces/Microk8s_Install-Ubuntu-22.04 (main) $ 
+@ugrand ➜ /workspaces/Microk8s_Install-Ubuntu-22.04 (main) $ minikube delete
+🔥  Deleting "minikube" in docker ...
+🔥  Deleting container "minikube" ...
+🔥  Removing /home/codespace/.minikube/machines/minikube ...
+💀  Removed all traces of the "minikube" cluster.
+@ugrand ➜ /workspaces/Microk8s_Install-Ubuntu-22.04 (main) $ minikube start
+😄  minikube v1.31.2 on Ubuntu 20.04 (docker/amd64)
+✨  Automatically selected the docker driver. Other choices: none, ssh
+📌  Using Docker driver with root privileges
+👍  Starting control plane node minikube in cluster minikube
+🚜  Pulling base image ...
+🔥  Creating docker container (CPUs=2, Memory=2200MB) ...
+🐳  Preparing Kubernetes v1.27.4 on Docker 24.0.4 ...
+    ▪ Generating certificates and keys ...
+    ▪ Booting up control plane ...
+    ▪ Configuring RBAC rules ...
+🔗  Configuring bridge CNI (Container Networking Interface) ...
+    ▪ Using image gcr.io/k8s-minikube/storage-provisioner:v5
+🔎  Verifying Kubernetes components...
+🌟  Enabled addons: storage-provisioner, default-storageclass
+🏄  Done! kubectl is now configured to use "minikube" cluster and "default" namespace by default
+@ugrand ➜ /workspaces/Microk8s_Install-Ubuntu-22.04 (main) $ minikube config set cpus 4
+❗  These changes will take effect upon a minikube delete and then a minikube start
+@ugrand ➜ /workspaces/Microk8s_Install-Ubuntu-22.04 (main) $  minikube config set memory 8192
+❗  These changes will take effect upon a minikube delete and then a minikube start
+@ugrand ➜ /workspaces/Microk8s_Install-Ubuntu-22.04 (main) $ minikube delete
+🔥  Deleting "minikube" in docker ...
+🔥  Deleting container "minikube" ...
+🔥  Removing /home/codespace/.minikube/machines/minikube ...
+💀  Removed all traces of the "minikube" cluster.
+@ugrand ➜ /workspaces/Microk8s_Install-Ubuntu-22.04 (main) $ minikube start
+😄  minikube v1.31.2 on Ubuntu 20.04 (docker/amd64)
+✨  Automatically selected the docker driver. Other choices: none, ssh
+
+⛔  Exiting due to RSRC_INSUFFICIENT_CORES: Requested cpu count 4 is greater than the available cpus of 2
+
+@ugrand ➜ /workspaces/Microk8s_Install-Ubuntu-22.04 (main) $ minikube config set cpus 2
+❗  These changes will take effect upon a minikube delete and then a minikube start
+@ugrand ➜ /workspaces/Microk8s_Install-Ubuntu-22.04 (main) $ minikube start
+😄  minikube v1.31.2 on Ubuntu 20.04 (docker/amd64)
+✨  Automatically selected the docker driver. Other choices: none, ssh
+
+❌  Exiting due to MK_USAGE: Docker has only 3913MB memory but you specified 8192MB
+
+@ugrand ➜ /workspaces/Microk8s_Install-Ubuntu-22.04 (main) $  minikube config set memory 2913MB
+❗  These changes will take effect upon a minikube delete and then a minikube start
+@ugrand ➜ /workspaces/Microk8s_Install-Ubuntu-22.04 (main) $ minikube delete
+🙄  "minikube" profile does not exist, trying anyways.
+❌  Failed to stop ssh-agent process: failed loading config: cluster "minikube" does not exist
+💀  Removed all traces of the "minikube" cluster.
+@ugrand ➜ /workspaces/Microk8s_Install-Ubuntu-22.04 (main) $ minikube start
+😄  minikube v1.31.2 on Ubuntu 20.04 (docker/amd64)
+✨  Automatically selected the docker driver. Other choices: ssh, none
+📌  Using Docker driver with root privileges
+👍  Starting control plane node minikube in cluster minikube
+🚜  Pulling base image ...
+🔥  Creating docker container (CPUs=2, Memory=2913MB) ...
+🐳  Preparing Kubernetes v1.27.4 on Docker 24.0.4 ...
+    ▪ Generating certificates and keys ...
+    ▪ Booting up control plane ...
+    ▪ Configuring RBAC rules ...
+🔗  Configuring bridge CNI (Container Networking Interface) ...
+    ▪ Using image gcr.io/k8s-minikube/storage-provisioner:v5
+🔎  Verifying Kubernetes components...
+🌟  Enabled addons: storage-provisioner, default-storageclass
+🏄  Done! kubectl is now configured to use "minikube" cluster and "default" namespace by default
+@ugrand ➜ /workspaces/Microk8s_Install-Ubuntu-22.04 (main) $ ^C
+@ugrand ➜ /workspaces/Microk8s_Install-Ubuntu-22.04 (main) $ minikube stop
+✋  Stopping node "minikube"  ...
+🛑  Powering off "minikube" via SSH ...
+🛑  1 node stopped.
+@ugrand ➜ /workspaces/Microk8s_Install-Ubuntu-22.04 (ugrand) $ kubectl expose deployment my-nginx --name=my-nginx-svc --type=NodePort --port=80
